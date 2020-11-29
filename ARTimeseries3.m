@@ -1,4 +1,4 @@
-function [T,ar,e]=ARTimeseries3(n,sigma,alpha)
+function [check,ar,e,arcoeffs,e_check]=ARTimeseries3(n,sigma,alpha)
     % cho hệ số tự tương quan riêng , xây dựng chuỗi {x_t}
     % dự đoán hệ số tự hồi quy
     % n là số lượng điểm muốn sinh ra
@@ -51,10 +51,11 @@ function [T,ar,e]=ARTimeseries3(n,sigma,alpha)
     ar(1)=[];
     check=zeros(10,10);
     j=1;
-    for i=1:10
-        
+    for i=1:10       
         check(i,:)=T(j:j+9,1);
         j=j+10;       
     end
-    check
+    %hệ số tự hồi quy dự đoán bằng burg
+    [arcoeffs,e_check] = arburg(T,p);
+    arcoeffs(1)=[];
     end
