@@ -1,16 +1,13 @@
-function [ar,T,e]=ARTimeseries3(n,sigma,alpha)
+function [T,ar,e]=ARTimeseries3(n,sigma,alpha)
     % cho hệ số tự tương quan riêng , xây dựng chuỗi {x_t}
     % dự đoán hệ số tự hồi quy
     % n là số lượng điểm muốn sinh ra
     % alpha là hệ số tự tương quan riêng
     p=numel(alpha);
-    r=zeros(p,1); % ma trận 1 chiều lưu các tự tương quan mẫu
     b=zeros(p);% ma trận 2 chiều lưu các giá trị a(k,p)
     for i=1:p
         b(i,i)=alpha(i);
     end
-    
-    
     for k=1:p-1
         for i=1:k
             b(k+1,i)=b(k,i)-b(k+1,k+1)*b(k,k-i+1);
@@ -43,5 +40,21 @@ function [ar,T,e]=ARTimeseries3(n,sigma,alpha)
      [r_,lg] = xcorr(T,'biased');
      r_(lg<0) = [];
     [ar,e] = levinson(r_,p);
+    [~,~,k] = levinson(r_,100);
+    stem(k,'filled')   
+    conf = sqrt(2)*erfinv(0.95)/sqrt(15000);
+    hold on
+    [X,Y] = ndgrid(xlim,conf*[-1 1]);
+    %[X,Y] = ndgrid(xlim,T);
+    plot(X,Y,'--r')
+    hold off
     ar(1)=[];
+    check=zeros(10,10);
+    j=1;
+    for i=1:10
+        
+        check(i,:)=T(j:j+9,1);
+        j=j+10;       
+    end
+    check
     end
