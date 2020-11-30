@@ -59,5 +59,6 @@ function [check,ar,e,arcoeffs,e_check,ar_theory]=ARTimeseries3(n,sigma,alpha)
         arcoeffs(1)=[];
         ar_theory=zeros(1,p);
         ar_theory(1,:)=b(p,:);
-        
+        ar(:)=-ar(:);
+        arcoeffs(:)=-arcoeffs(:);
 end
